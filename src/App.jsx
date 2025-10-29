@@ -11,8 +11,9 @@ const App = () => {
 
   const [token, setToken] = useState("");
   const [posts, setPosts] = useState([]);
+  const [user, setUser] = useState({});
 
-  const BASE_URL = "http://localhost:8080"
+  const BASE_URL = "http://localhost:8080";
 
   const authorisedRequest = (url, method, data = {}) => axios({
     method,
@@ -21,13 +22,21 @@ const App = () => {
     headers: {
       "Authorization": `Bearer ${token}`
     }
-  })
+  });
+
+  const login = (token, user) => {
+    setToken(token);
+    setUser(user);
+  };
 
   const client = {
     getPosts: () => authorisedRequest("/posts", "GET")
       .then(({ data }) => {
         setPosts(data)
       }),
+    getPost: (id) => authorisedRequest(`/posts/${id}`, "GET"),
+    updatePost: (data, id) => authorisedRequest(`/posts/${id}`, "PUT", data),
+    deletePost: (id) => authorisedRequest(`/posts/${id}`, "DELETE"),
     createPost: (data) => authorisedRequest("/posts", "POST", data)
       .then(() => {
         client.getPosts()
@@ -36,31 +45,32 @@ const App = () => {
       method: "POST",
       url: `${BASE_URL}/auth/signup`,
       data
-    }).then(({ data }) => setToken(data.token)),
+    }).then(({ data }) => login(data.token, data.user)),
     login: (data) => axios({
       method: "POST",
       url: `${BASE_URL}/auth/login`,
       auth: data,
-    }).then(({ data }) => setToken(data.token)),
+    }).then(({ data }) => login(data.token, data.user)),
   };
 
   const nav = useNavigate();
 
   const logout = () => {
-    setToken("")
-    nav("/")
-  }
+    setToken("");
+    setUser({});
+    nav("/");
+  };
 
   return (
     <Container>
       <>
         {token === ""
           ? <UnauthedRoutes client={client}/>
-          : <AuthedRoutes posts={posts} client={client} logout={logout}/>
+          : <AuthedRoutes user={user} posts={posts} client={client} logout={logout}/>
         }
       </>
     </Container>
   );
-}
+};
 
 export default App;

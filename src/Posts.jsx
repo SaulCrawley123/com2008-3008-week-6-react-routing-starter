@@ -6,7 +6,7 @@ import { isEmpty } from "lodash";
 import Post from "./Post.jsx";
 import { Link } from "react-router-dom";
 
-const Posts = ({ client, posts }) => {
+const Posts = ({ client, posts, user }) => {
   useEffect(() => {
     client.getPosts()
   }, []);
@@ -20,7 +20,7 @@ const Posts = ({ client, posts }) => {
       )}
       <Stack gap={2}>
         {posts.map(p => (
-          <Post key={p.id} post={p}/>
+          <Post key={p.id} post={p} ownedByUser={p.userId === user.id}/>
         ))}
       </Stack>
     </>
