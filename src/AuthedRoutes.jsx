@@ -1,10 +1,10 @@
-
 import { Button } from "react-bootstrap";
 import { Route, Routes } from "react-router-dom";
 
 import Posts from "./Posts.jsx";
 import NewPostForm from "./NewPostForm.jsx";
 import PostEditForm from "./PostEditForm.jsx";
+import NotFound from "./NotFound.jsx";
 
 const AuthedRoutes = ({ logout, client, posts, user }) => {
 
@@ -15,6 +15,7 @@ const AuthedRoutes = ({ logout, client, posts, user }) => {
         <Route path="/" element={<Posts user={user} client={client} posts={posts}/>}/>
         <Route path="/posts/:postId" element={<PostEditForm client={client} />} />
         <Route path="newpost" element={<NewPostForm client={client}/>}/>
+        <Route path="*" element={<NotFound/>} />
       </Routes>
     </div>
   );

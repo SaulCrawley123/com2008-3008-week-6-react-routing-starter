@@ -1,12 +1,7 @@
 import { Button, Card } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const Post = ({ post, ownedByUser }) => {
-  const nav = useNavigate();
-
-  const editHandler = () => {
-    nav(`/posts/${post.id}`)
-  };
 
   return (
     <Card className="p-2">
@@ -14,9 +9,9 @@ const Post = ({ post, ownedByUser }) => {
       <p>{post.body}</p>
       <p>User ID: {post.userId}</p>
       {ownedByUser && (
-        <div>
-          <Button onClick={editHandler}>Edit/Delete</Button>
-        </div>
+        <Link to={`/posts/${post.id}`}>
+          <Button>Edit/Delete</Button>
+        </Link>
       )}
     </Card>
   );

@@ -63,12 +63,10 @@ const App = () => {
 
   return (
     <Container>
-      <>
-        {token === ""
-          ? <UnauthedRoutes client={client}/>
-          : <AuthedRoutes user={user} posts={posts} client={client} logout={logout}/>
-        }
-      </>
+      {token === ""
+        ? <UnauthedRoutes client={client}/>
+        : <AuthedRoutes user={user} posts={posts} client={client} logout={logout}/>
+      }
     </Container>
   );
 };
